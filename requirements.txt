@@ -1,17 +1,13 @@
-# Core
-fastapi>=0.95.2
-uvicorn>=0.22.0
-python-multipart>=0.0.6
-
-# Document Processing
-langchain>=0.0.287
-pypdf>=3.10.0
-docx2txt>=0.8
-unstructured>=0.7.6
-
-# AI/Vector DB
-sentence-transformers>=2.2.2
-faiss-cpu>=1.7.4  # Use faiss-gpu if you have CUDA
-
-# Frontend (Optional)
-streamlit>=1.25.0
+fastapi
+uvicorn
+pydantic
+openai
+pinecone
+langchain
+langchain-community
+langchain-openai
+langchain-pinecone
+PyPDF2
+python-docx
+python-dotenv
+requests

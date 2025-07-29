@@ -1,11 +1,12 @@
 fastapi
 uvicorn
 pydantic
-openai
+#openai
 pinecone
 langchain
 langchain-community
-langchain-openai
+#langchain-openai
+langchain-google-genai
 langchain-pinecone
 PyPDF2
 python-docx

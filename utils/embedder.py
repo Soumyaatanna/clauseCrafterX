@@ -20,7 +20,15 @@ def embed_document(text: str, index_name: str, embeddings_client: HuggingFaceEnd
     print("Embedding complete.")
 
 # --- Retrieve Relevant Clauses ---
+# In utils/embedder.py
+
+# The FIX is here: The second argument is 'vector_store', not 'index_name'.
+# In utils/embedder.py
+
+# The FIX is in the function signature: it accepts 'vector_store'.
 def get_relevant_clauses(question: str, vector_store: PineconeVectorStore, top_k: int = 4) -> str:
     """Finds and returns the most relevant text chunks using a provided vector store."""
+    
+    # This line will now work correctly.
     retrieved_docs = vector_store.similarity_search(question, k=top_k)
     return "\n\n".join([doc.page_content for doc in retrieved_docs])

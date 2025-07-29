@@ -6,10 +6,13 @@ pinecone
 langchain
 langchain-community
 #langchain-openai
-langchain-google-genai
+langchain-groq       
+huggingface-hub
 langchain-pinecone
 PyPDF2
 python-docx
 python-dotenv
 requests
 gunicorn
+langchain-huggingface
+PyMuPDF

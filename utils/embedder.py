@@ -1,36 +1,26 @@
+from langchain_huggingface import HuggingFaceEndpointEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
 
-# ADD THIS FUNCTION
-def embed_document(text: str, index_name: str):
-    """Splits text, creates embeddings, and stores them in Pinecone."""
+# --- Embed Document ---
+def embed_document(text: str, index_name: str, embeddings_client: HuggingFaceEndpointEmbeddings):
+    """Splits text, creates embeddings, and stores them in Pinecone using a provided client."""
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=1000,
-        chunk_overlap=200,
-        length_function=len
+        chunk_overlap=200
     )
     chunks = text_splitter.split_text(text)
-    
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-    
+
     print(f"Embedding {len(chunks)} chunks into Pinecone index '{index_name}'...")
-    # This creates the vector store and upserts the data
     PineconeVectorStore.from_texts(
-        texts=chunks, 
-        embedding=embeddings, 
+        texts=chunks,
+        embedding=embeddings_client,
         index_name=index_name
     )
     print("Embedding complete.")
 
-
-def get_relevant_clauses(question: str, index_name: str) -> str:
-    """Finds and returns the most relevant text chunks for a given question."""
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-    vector_store = PineconeVectorStore.from_existing_index(
-        index_name=index_name, 
-        embedding=embeddings
-    )
-    retrieved_docs = vector_store.similarity_search(question, k=3)
-    context = "\n\n".join([doc.page_content for doc in retrieved_docs])
-    return context
+# --- Retrieve Relevant Clauses ---
+def get_relevant_clauses(question: str, vector_store: PineconeVectorStore, top_k: int = 4) -> str:
+    """Finds and returns the most relevant text chunks using a provided vector store."""
+    retrieved_docs = vector_store.similarity_search(question, k=top_k)
+    return "\n\n".join([doc.page_content for doc in retrieved_docs])
